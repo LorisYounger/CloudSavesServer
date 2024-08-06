@@ -26,5 +26,18 @@ namespace SavesServer.DataBase
         /// </summary>
         [Column]
         public ulong PassKey { get; set; }
+        /// <summary>
+        /// 游戏列表,用逗号分隔
+        /// </summary>
+        [Column]
+        public string ListGame { get; set; } = "";
+        /// <summary>
+        /// 游戏列表
+        /// </summary>
+        public List<string> ListGames
+        {
+            get => ListGame.Split(',').ToList();
+            set => ListGame = string.Join(',', value);
+        }
     }
 }

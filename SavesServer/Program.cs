@@ -1,5 +1,6 @@
 using LinePutScript;
 using LinePutScript.Converter;
+using LinePutScript.Dictionary;
 using SavesServer.DataBase;
 using System.Security.Cryptography.X509Certificates;
 
@@ -14,6 +15,14 @@ namespace SavesServer
         public static void Main(string[] args)
         {
             Console.WriteLine("Game Saves Server");
+
+            //º”‘ÿ∑≠“Î
+            var di = new DirectoryInfo(new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName + @"\lang");
+            if (di.Exists)
+                foreach (FileInfo fi in di.EnumerateFiles("*.lps"))
+                {
+                    LocalizeCore.AddCulture(fi.Name.Substring(0, fi.Name.Length - fi.Extension.Length), new LPS_D(File.ReadAllText(fi.FullName)));
+                }
 
             LoadSetting();
 

@@ -1,4 +1,5 @@
 ﻿using FreeSql.DataAnnotations;
+using static CloudSaves.Client.ReturnStructure;
 
 namespace SavesServer.DataBase
 {
@@ -6,44 +7,44 @@ namespace SavesServer.DataBase
     /// 游戏存档
     /// </summary>
     [Table]
-    public class db_Save
+    public class db_Save : GameSaveData
     {
         /// <summary>
         /// 存档ID
         /// </summary>
         [Column(IsIdentity = true, IsPrimary = true)]
-        public long SaveID { get; set; }
+        public override long SaveID { get; set; }
         /// <summary>
         /// 玩家ID
         /// </summary>
         [Column]
-        public int Uid { get; set; }
+        public override int Uid { get; set; }
         /// <summary>
         /// 游戏名称
         /// </summary>
         [Column(StringLength = 255)]
-        public string GameName { get; set; } = "";
+        public override string GameName { get; set; } = "";
         /// <summary>
         /// 存档名称
         /// </summary>
         [Column(StringLength = 255)]
-        public string SaveName { get; set; } = "";
+        public override string SaveName { get; set; } = "";
 
         /// <summary>
         /// 存档时间
         /// </summary>
         [Column]
-        public DateTime SaveTime { get; set; }
+        public override DateTime SaveTime { get; set; }
         /// <summary>
         /// 游戏存档
         /// </summary>
         [Column(DbType = "LONGTEXT")]
-        public string SaveData { get; set; } = "";
+        public override string SaveData { get; set; } = "";
 
         /// <summary>
         /// 存档介绍 (eg: 存档版本,存档内容)
         /// </summary>
         [Column(StringLength = 10000)]
-        public string Introduce { get; set; } = "";
+        public override string Introduce { get; set; } = "";
     }
 }

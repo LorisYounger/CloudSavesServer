@@ -4,4 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="LinePutScript" Version="1.11.7" />
+  </ItemGroup>
+
 </Project>

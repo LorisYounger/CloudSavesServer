@@ -15,7 +15,6 @@ namespace SavesServer
             {
                 throw new ArgumentNullException(nameof(bindingContext));
             }
-
             // 从请求体中读取原始LPS字符串
             using (var reader = new StreamReader(bindingContext.HttpContext.Request.Body, Encoding.UTF8))
             {
