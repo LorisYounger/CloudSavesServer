@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LinePutScript.Converter;
+using System;
 using static CloudSaves.Client.ReturnStructure;
 
 namespace CloudSaves.Client
@@ -32,7 +33,22 @@ namespace CloudSaves.Client
         /// </summary>
         public class SaveData : LoginData
         {
-            public GameSaveData Data { get; set; }
+            /// <summary>
+            /// 游戏存档
+            /// </summary>
+            public virtual string GameSaveData { get; set; } = "";
+            /// <summary>
+            /// 游戏名称
+            /// </summary>
+            public virtual string GameName { get; set; } = "";
+            /// <summary>
+            /// 存档介绍 (eg: 存档版本,存档内容)
+            /// </summary>
+            public virtual string Introduce { get; set; } = "";
+            /// <summary>
+            /// 存档名称
+            /// </summary>
+            public virtual string SaveName { get; set; } = "";
         }
     }
 }

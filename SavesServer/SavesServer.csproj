@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="setting.lps" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FreeSql.Provider.MySqlConnector" Version="3.2.832" />
     <PackageReference Include="LinePutScript" Version="1.11.7" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

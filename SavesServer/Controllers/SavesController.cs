@@ -4,6 +4,7 @@ using LinePutScript.Converter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SavesServer.DataBase;
+using static CloudSaves.Client.ReturnStructure;
 using static SavesServer.Controllers.UserController;
 using static SavesServer.Program;
 namespace SavesServer.Controllers
@@ -88,16 +89,23 @@ namespace SavesServer.Controllers
             if (Checking.IDsCheck(HttpContext, data.SteamID, data.PassKey).Check(out error))
                 return error;
             db_User user = Login(data);
-            if (!user.ListGames.Contains(data.Data.GameName))
+            if (!user.ListGames.Contains(data.GameName))
             {
                 var list = user.ListGames;
-                list.Add(data.Data.GameName);
+                list.Add(data.GameName);
                 user.ListGames = list;
                 FSQL.Update<db_User>().SetSource(user).ExecuteAffrows();
             }
-            data.Data.Uid = user.Uid;
-            data.Data.SaveID = 0;
-            FSQL.Insert(data.Data).ExecuteAffrows();
+            var save = new GameSaveData()
+            {
+                GameName = data.GameName,
+                SaveData = data.GameSaveData,
+                SaveTime = DateTime.Now,
+                Introduce = data.Introduce,
+                SaveName = data.SaveName,
+                Uid = user.Uid
+            };
+            FSQL.Insert(save).ExecuteAffrows();
             return "Success";
         }
     }
