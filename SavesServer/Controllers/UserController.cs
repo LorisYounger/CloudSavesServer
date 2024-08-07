@@ -66,6 +66,7 @@ namespace SavesServer.Controllers
                 lg.Remove(data.GameName);
                 FSQL.Update<db_User>().Set(a => a.ListGames, lg).Where(a => a.Uid == user.Uid).ExecuteAffrows();
                 FSQL.Delete<db_Save>().Where(a => a.Uid == user.Uid).Where(a => a.GameName == data.GameName).ExecuteAffrows();
+                Log("UserDelete", $"Delete Game:{user.SteamID} {user.PassKey} {data.GameName}\n{HttpContext.Request.HttpContext.Connection.RemoteIpAddress}");
                 return new Line("Success", "Delete Game Success").ToString();
             }
             return new Line("Error", "Game Not Found").ToString();
@@ -82,6 +83,7 @@ namespace SavesServer.Controllers
             if (Checking.IDsCheck(HttpContext, data.SteamID, data.PassKey).Check(out error))
                 return error;
             db_User user = Login(data);
+            Log("UserDelete", $"Delete User:{user.SteamID} {user.PassKey}\n{HttpContext.Request.HttpContext.Connection.RemoteIpAddress}");
             FSQL.Delete<db_User>().Where(a => a.Uid == user.Uid).ExecuteAffrows();
             FSQL.Delete<db_Save>().Where(a => a.Uid == user.Uid).ExecuteAffrows();
             return new Line("Success", "Delete Account Success").ToString();

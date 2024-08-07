@@ -14,7 +14,7 @@ namespace SavesServer
 
         public static void Main(string[] args)
         {
-            Console.WriteLine("Game Saves Server");
+            Console.WriteLine("Game Saves Server".Translate());
 
             //¼ÓÔØ·­Òë
             var di = new DirectoryInfo(new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName + @"\lang");
@@ -33,12 +33,12 @@ namespace SavesServer
 
 
             var builder = WebApplication.CreateBuilder(args);
-            Console.WriteLine("Contact Information:" + Set.ContactInformation);
+            Console.WriteLine("Contact Information:".Translate() + Set.ContactInformation);
             if (File.Exists(Set.CertificatePath))
             {
                 var x509ca = new X509Certificate2(File.ReadAllBytes(Set.CertificatePath), Set.CertificatePassword);
                 builder.WebHost.UseKestrel(option => option.ListenAnyIP(Set.Port, config => config.UseHttps(x509ca)));
-                Console.WriteLine("SSL Enabled");
+                Console.WriteLine("SSL Enabled".Translate());
             }
             else
                 builder.WebHost.UseKestrel(option => option.ListenAnyIP(Set.Port));
@@ -74,8 +74,8 @@ namespace SavesServer
             app.MapControllers();
 
 
-            Console.WriteLine("Server Start at Port:" + Set.Port);
-            Console.WriteLine("Press Ctrl+C to exit.");
+            Console.WriteLine("Server Start at Port:".Translate() + Set.Port);
+            Console.WriteLine("Press Ctrl+C to exit.".Translate());
 
             app.Run();
         }
@@ -89,7 +89,7 @@ namespace SavesServer
             }
             if (Set.Port == 0)
             {
-                Console.WriteLine("Please Enter Server Port: (default:6655)");
+                Console.WriteLine("Please Enter Server Port: (default:6655)".Translate());
                 if (ushort.TryParse(Console.ReadLine(), out var result))
                 {
                     Set.Port = result;
@@ -101,20 +101,21 @@ namespace SavesServer
             }
             if (Set.ConnectionString == "")
             {
-                Console.WriteLine("Please Enter MYSQL ConnectionString: (default:generation)");
+                Console.WriteLine("Please Enter MYSQL ConnectionString: (default:generation)".Translate());
                 string? result = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(result))
                 {
-                    Console.Write("Enter the MySQL server name/ipaddr: ");
+                    Console.Write("Enter the MySQL server name/ipaddr: ".Translate());
                     string server = Console.ReadLine() ?? "localhost";
-                    Console.Write("Enter the MySQL database name: ");
+                    Console.Write("Enter the MySQL database name: ".Translate());
                     string database = Console.ReadLine() ?? "gamesavesserver";
-                    Console.Write("Enter the MySQL username: ");
+                    Console.Write("Enter the MySQL username: ".Translate());
                     string username = Console.ReadLine() ?? "root";
-                    Console.Write("Enter the MySQL password: ");
+                    Console.Write("Enter the MySQL password: ".Translate());
                     string password = Console.ReadLine() ?? "password";
                     string connectionString = $"Server={server};Database={database};Uid={username};Pwd={password};";
-                    Console.WriteLine("\nGenerated MySQL Connection String:");
+                    Console.WriteLine();
+                    Console.WriteLine("Generated MySQL Connection String:".Translate());
                     Console.WriteLine(connectionString);
                     Set.ConnectionString = connectionString;
                 }
@@ -125,13 +126,13 @@ namespace SavesServer
             }
             if (Set.ContactInformation == "")
             {
-                Console.WriteLine("Please Enter Contact Information: ");
+                Console.WriteLine("Please Enter Contact Information: ".Translate());
                 string? result = Console.ReadLine();
                 Set.ContactInformation = result ?? "NO Contact Information";
             }
             if (Set.CertificatePath == "")
             {
-                Console.WriteLine("if using SSL. Please Enter X509Certificate2 Certificate Path (*.pfx): (default:no ssl)");
+                Console.WriteLine("if using SSL. Please Enter X509Certificate2 Certificate Path (*.pfx): (default:no ssl)".Translate());
                 string? result = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(result))
                 {
@@ -151,7 +152,7 @@ namespace SavesServer
                 }
                 if (Set.CertificatePath != null)
                 {
-                    Console.WriteLine("Please Enter Certificate Password: ");
+                    Console.WriteLine("Please Enter Certificate Password: ".Translate());
                     Set.CertificatePassword = Console.ReadLine();
                 }
             }
