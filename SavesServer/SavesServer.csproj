@@ -1,23 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<LangVersion>Latest</LangVersion>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="setting.lps" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="setting.lps" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="FreeSql.Provider.MySqlConnector" Version="3.2.832" />
-    <PackageReference Include="LinePutScript" Version="1.11.7" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="FreeSql.Provider.MySqlConnector" Version="3.2.832" />
+		<PackageReference Include="LinePutScript" Version="1.11.7" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CloudSaves.Client\CloudSaves.Client.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\CloudSaves.Client\CloudSaves.Client.csproj" />
+	</ItemGroup>
 
 </Project>

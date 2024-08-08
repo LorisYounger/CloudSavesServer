@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SavesServer.DataBase;
 using static SavesServer.Program;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SavesServer.Controllers
 {

@@ -8,7 +8,7 @@ namespace SavesServer
         /// 数据库连接字符串
         /// </summary>
         [Line]
-        public string ConnectionString { get; set; } = "";
+        public string? ConnectionString { get; set; } = "";
         /// <summary>
         /// 服务器端口
         /// </summary>
@@ -16,7 +16,7 @@ namespace SavesServer
         /// <summary>
         /// 联系方式
         /// </summary>
-        [Line] public string ContactInformation { get; set; } = "";
+        [Line] public string? ContactInformation { get; set; } = "";
         /// <summary>
         /// 证书路径(若有)
         /// </summary>
