@@ -11,10 +11,15 @@ namespace SavesServer
         public static IFreeSql FSQL => fsql ?? throw new Exception("fsql is null");
         static IFreeSql? fsql { get; set; }
         public static Setting Set { get; set; } = new Setting();
+        /// <summary>
+        /// 版本号
+        /// </summary>
+        public static string Version => "1.0";
 
         public static void Main(string[] args)
         {
-            Console.WriteLine("Game Saves Server".Translate());
+            Console.WriteLine("Game Saves Server v" + Version);
+            Console.WriteLine("Github: https://github.com/LorisYounger/CloudSavesServer/releases");
 
             //加载翻译
             var di = new DirectoryInfo(new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName + @"\lang");
@@ -23,6 +28,7 @@ namespace SavesServer
                 {
                     LocalizeCore.AddCulture(fi.Name.Substring(0, fi.Name.Length - fi.Extension.Length), new LPS_D(File.ReadAllText(fi.FullName)));
                 }
+            LocalizeCore.LoadDefaultCulture();
 
             LoadSetting();
 
@@ -128,7 +134,35 @@ namespace SavesServer
             {
                 Console.WriteLine("Please Enter Contact Information: ".Translate());
                 string? result = Console.ReadLine();
-                Set.ContactInformation = result ?? "NO Contact Information";
+                if (result == null)
+                {
+                    Set.ContactInformation = "NO Contact Information";
+                }
+                else
+                {
+                    Set.ContactInformation = result;
+                    Console.WriteLine("Add Language Translation? (y/n)".Translate());
+                    if (Console.ReadLine()?.ToLower() == "y")
+                    {
+                        Console.WriteLine("Please Enter Language 'Code:Contact' Information, Line by Line".Translate());
+                        Console.WriteLine("Example> en:Hello World");
+                        Console.WriteLine("Example> zh:你好，世界");
+                        Console.WriteLine("Enter 'exit' or empty to exit Language Translation".Translate());
+                        while (true)
+                        {
+                            Console.Write("> ");
+                            string? line = Console.ReadLine();
+                            if (string.IsNullOrWhiteSpace(line) || !line.Contains(":"))
+                            {
+                                break;
+                            }
+                            string[] lines = Sub.Split(line, 1, StringSplitOptions.None, ":");
+                            Set.ContactInformationTrans[lines[0].ToLower()] = lines[1];
+                        }
+                        Console.WriteLine("Language Translation Added".Translate());
+                    }
+                }
+
             }
             if (Set.CertificatePath == "")
             {
@@ -148,12 +182,12 @@ namespace SavesServer
                 }
                 else
                 {
-                    Set.CertificatePath = null;
+                    Set.CertificatePath = "";
                 }
-                if (Set.CertificatePath != null)
+                if (string.IsNullOrWhiteSpace(Set.CertificatePath))
                 {
-                    Console.WriteLine("Please Enter Certificate Password: ".Translate());
-                    Set.CertificatePassword = Console.ReadLine();
+                    Console.WriteLine("Please Enter Certificate Password:".Translate());
+                    Set.CertificatePassword = Console.ReadLine() ?? "";
                 }
             }
             File.WriteAllText(setpath, LPSConvert.SerializeObject(Set).ToString());

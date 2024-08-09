@@ -8,9 +8,18 @@ namespace SavesServer.Controllers
     public class IndexController : ControllerBase
     {
         [HttpGet("")]
-        public string Get() => "Saves Server#v1.0:|ContactInformation#" + Program.Set.ContactInformation + ":|\n" + ServerInfo;
+        public string Get(string? lang) => $"Saves Server#{Program.Version}:|ContactInformation#{ContactInformation(lang)}:|\n" + ServerInfo;
         [HttpPost("")]
-        public string Post() => "Saves Server:|v#1.0:|ContactInformation#" + Program.Set.ContactInformation + ":|\n" + ServerInfo;
+        public string Post(string? lang) => $"Saves Server:|v#{Program.Version}:|ContactInformation#{ContactInformation(lang)}:|\n" + ServerInfo;
+
+        public string ContactInformation(string? lang)
+        {
+            if (lang == null || Program.Set.ContactInformationTrans.Count == 0)
+                return Program.Set.ContactInformation;
+            if (Program.Set.ContactInformationTrans.TryGetValue(lang.ToLower(), out string? cit))
+                return cit;
+            return Program.Set.ContactInformation;
+        }
 
         private string? serverInfo;
         private DateTime serverInfoTime = DateTime.MinValue;

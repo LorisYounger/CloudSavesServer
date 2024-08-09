@@ -1,0 +1,18 @@
+Contact Information:#聯絡方式::|
+SSL Enabled#SSL已啟用:|
+Server Start at Port:#伺服器啟動連接埠::|
+Press Ctrl+C to exit.#按Ctrl+C鍵退出.:|
+Please Enter Server Port: (default:6655)#請輸入伺服器連接埠:(預設值:6655):|
+Please Enter MYSQL ConnectionString: (default:generation)#請輸入 MySQL 連接字串: (預設值: generation):|
+Enter the MySQL server name/ipaddr: #輸入 MySQL 伺服器名稱/IP 位址::|
+Enter the MySQL database name: #輸入 MySQL 資料庫名稱::|
+Enter the MySQL username: #輸入 MySQL 使用者名稱::|
+Enter the MySQL password: #輸入 MySQL 密碼::|
+Generated MySQL Connection String:#產生的 MySQL 連接字串::|
+Please Enter Contact Information: #請輸入聯絡資訊::|
+Add Language Translation? (y/n)#新增語言翻譯？ (y/n):|
+Please Enter Language 'Code:Contact' Information, Line by Line#請逐行輸入'語言代碼:聯絡人'訊息:|
+Enter 'exit' or empty to exit Language Translation#輸入'exit'或空白以退出語言翻譯:|
+Language Translation Added#語言翻譯已新增:|
+if using SSL. Please Enter X509Certificate2 Certificate Path (*.pfx): (default:no ssl)#如果使用 SSL，請輸入 X509Certificate2 憑證路徑(*.pfx): (預設:無 SSL):|
+Please Enter Certificate Password:#請輸入證書密碼::|

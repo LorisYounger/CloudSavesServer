@@ -60,9 +60,9 @@ namespace CloudSaves.Client
         /// <summary>
         /// 服务器信息
         /// </summary>
-        public async Task<ServerInfo> ServerInfo()
+        public async Task<ServerInfo> ServerInfo(string lang = null)
         {
-            var lps = await ConnectServer("", new LoginData() { SteamID = SteamID, PassKey = PassKey });
+            var lps = await ConnectServer(string.IsNullOrWhiteSpace(lang) ? "" : "?lang=" + lang.ToLower(), new LoginData() { SteamID = SteamID, PassKey = PassKey });
             return new ServerInfo()
             {
                 Version = lps.FirstOrDefault()?[(gstr)"v"],

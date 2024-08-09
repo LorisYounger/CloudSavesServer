@@ -1,0 +1,18 @@
+Contact Information:#Contact Information::|
+SSL Enabled#SSL Enabled:|
+Server Start at Port:#Server Start at Port::|
+Press Ctrl+C to exit.#Press Ctrl+C to exit.:|
+Please Enter Server Port: (default:6655)#Please Enter Server Port: (default:6655):|
+Please Enter MYSQL ConnectionString: (default:generation)#Please Enter MYSQL ConnectionString: (default:generation):|
+Enter the MySQL server name/ipaddr: #Enter the MySQL server name/ipaddr: :|
+Enter the MySQL database name: #Enter the MySQL database name: :|
+Enter the MySQL username: #Enter the MySQL username: :|
+Enter the MySQL password: #Enter the MySQL password: :|
+Generated MySQL Connection String:#Generated MySQL Connection String::|
+Please Enter Contact Information: #Please Enter Contact Information: :|
+Add Language Translation? (y/n)#Add Language Translation? (y/n):|
+Please Enter Language 'Code:Contact' Information, Line by Line#Please Enter Language 'Code:Contact' Information, Line by Line:|
+Enter 'exit' or empty to exit Language Translation#Enter 'exit' or empty to exit Language Translation:|
+Language Translation Added#Language Translation Added:|
+if using SSL. Please Enter X509Certificate2 Certificate Path (*.pfx): (default:no ssl)#if using SSL. Please Enter X509Certificate2 Certificate Path (*.pfx): (default:no ssl):|
+Please Enter Certificate Password:#Please Enter Certificate Password: :|

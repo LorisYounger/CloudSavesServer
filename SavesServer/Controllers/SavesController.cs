@@ -14,9 +14,7 @@ namespace SavesServer.Controllers
     public class SavesController : ControllerBase
     {
         [HttpGet("")]
-        public string Get() => "Saves Server v1.0\n" + Program.Set.ContactInformation;
-        [HttpPost("")]
-        public string Post() => "Saves Server:|v#1.0:|\n" + Program.Set.ContactInformation;
+        public string Get() => "Saves Server v" + Program.Version;
         /// <summary>
         /// 列出所有该游戏的数据
         /// </summary>
@@ -103,7 +101,7 @@ namespace SavesServer.Controllers
                 SaveTime = DateTime.Now,
                 Introduce = data.Introduce,
                 SaveName = data.SaveName,
-                Uid = user.Uid               
+                Uid = user.Uid
             };
             FSQL.Insert(save).ExecuteAffrows();
             return "Success";
