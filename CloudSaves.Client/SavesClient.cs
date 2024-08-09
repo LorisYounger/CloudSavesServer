@@ -52,7 +52,7 @@ namespace CloudSaves.Client
         {
             using (var client = new System.Net.Http.HttpClient())
             {
-                var content = new System.Net.Http.StringContent(LPSConvert.SerializeObject(data).ToString());
+                var content = new System.Net.Http.StringContent(LPSConvert.SerializeObject(data, convertNoneLineAttribute: true).ToString());
                 var response = await client.PostAsync(ServerUrl + "/" + URL, content);
                 return new LPS(await response.Content.ReadAsStringAsync());
             }
@@ -65,10 +65,10 @@ namespace CloudSaves.Client
             var lps = await ConnectServer("", new LoginData() { SteamID = SteamID, PassKey = PassKey });
             return new ServerInfo()
             {
-                Version = lps[0][(gstr)"v"],
+                Version = lps.FirstOrDefault()?[(gstr)"v"],
                 TotalUser = lps[1][(gint)"TotalUser"],
                 TotalSave = lps[1][(gint)"TotalSave"],
-                ContactInformation = lps[0][(gstr)"ContactInformation"]
+                ContactInformation = lps.FirstOrDefault()?[(gstr)"ContactInformation"]
             };
         }
         /// <summary>
@@ -79,7 +79,7 @@ namespace CloudSaves.Client
         {
             GameData gameData = new GameData() { GameName = gamename };
             SetLoginData(gameData);
-            var lps = await ConnectServer("Save/ListGameSaves", gameData);
+            var lps = await ConnectServer("Saves/ListGameSaves", gameData);
             List<GameSaveData> results = new List<GameSaveData>();
             foreach (var item in lps)
             {
@@ -96,7 +96,7 @@ namespace CloudSaves.Client
         {
             SaveIDsData saveIDsData = new SaveIDsData() { SaveIDs = saveIDs };
             SetLoginData(saveIDsData);
-            var lps = await ConnectServer("Save/GetGameSave", saveIDsData);
+            var lps = await ConnectServer("Saves/GetGameSave", saveIDsData);
             List<GameSaveData> results = new List<GameSaveData>();
             foreach (var item in lps)
             {
@@ -113,8 +113,8 @@ namespace CloudSaves.Client
         {
             SaveIDsData saveIDsData = new SaveIDsData() { SaveIDs = saveIDs };
             SetLoginData(saveIDsData);
-            var lps = await ConnectServer("Save/RemoveGameSave", saveIDsData);
-            return lps[0].Name == "Success";
+            var lps = await ConnectServer("Saves/RemoveGameSave", saveIDsData);
+            return lps.FirstOrDefault()?.Name == "Success";
         }
         /// <summary>
         /// 添加游戏存档
@@ -128,8 +128,8 @@ namespace CloudSaves.Client
         {
             SaveData saveData = new SaveData() { GameName = gamename, GameSaveData = data, SaveName = saveName, Introduce = introduce };
             SetLoginData(saveData);
-            var lps = await ConnectServer("Save/AddGameSave", saveData);
-            return lps[0].Name == "Success";
+            var lps = await ConnectServer("Saves/AddGameSave", saveData);
+            return lps.FirstOrDefault()?.Name == "Success";
         }
         /// <summary>
         /// 列出当前用户存档过的游戏
@@ -150,7 +150,7 @@ namespace CloudSaves.Client
             GameData gameData = new GameData() { GameName = gameName };
             SetLoginData(gameData);
             var lps = await ConnectServer("User/DeleteGame", gameData);
-            return lps[0].Name == "Success";
+            return lps.FirstOrDefault()?.Name == "Success";
         }
         /// <summary>
         /// 删除游戏内账号所有存档和信息
@@ -159,7 +159,7 @@ namespace CloudSaves.Client
         public async Task<bool> DeleteAccount()
         {
             var lps = await ConnectServer("User/DeleteAccount", new LoginData() { SteamID = SteamID, PassKey = PassKey });
-            return lps[0].Name == "Success";
+            return lps.FirstOrDefault()?.Name == "Success";
         }
 
 

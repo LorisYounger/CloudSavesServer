@@ -96,14 +96,14 @@ namespace SavesServer.Controllers
                 user.ListGames = list;
                 FSQL.Update<db_User>().SetSource(user).ExecuteAffrows();
             }
-            var save = new GameSaveData()
+            var save = new db_Save()
             {
                 GameName = data.GameName,
                 SaveData = data.GameSaveData,
                 SaveTime = DateTime.Now,
                 Introduce = data.Introduce,
                 SaveName = data.SaveName,
-                Uid = user.Uid
+                Uid = user.Uid               
             };
             FSQL.Insert(save).ExecuteAffrows();
             return "Success";

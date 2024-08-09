@@ -36,7 +36,7 @@ namespace SavesServer.DataBase
         /// </summary>
         public List<string> ListGames
         {
-            get => ListGame.Split(',').ToList();
+            get => ListGame.Length == 0 ? new List<string>() : ListGame.Split(',').ToList();
             set => ListGame = string.Join(',', value);
         }
     }
