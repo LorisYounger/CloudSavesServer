@@ -184,7 +184,7 @@ namespace SavesServer
                 {
                     Set.CertificatePath = "";
                 }
-                if (string.IsNullOrWhiteSpace(Set.CertificatePath))
+                if (!string.IsNullOrWhiteSpace(Set.CertificatePath))
                 {
                     Console.WriteLine("Please Enter Certificate Password:".Translate());
                     Set.CertificatePassword = Console.ReadLine() ?? "";
