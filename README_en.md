@@ -32,8 +32,8 @@ SavesClient sc = new SavesClient(serverurl, steamid, passkey);
 
 ## 由官方维护的服务器
 
-| 服务器所在地 | 服务端链接                  | 有效期 |
-| ------------ | --------------------------- | ------ |
-| 中国宁波     | https://cn.css.exlb.net     | LTS    |
-| 中国香港     | https://hkcss.exlb.net:6655 | LT     |
+| 服务器所在地 | 服务端链接                  | 有效期        |
+| ------------ | --------------------------- | ------------- |
+| 中国宁波     | https://cn.css.exlb.net     | LTS           |
+| 中国香港     | https://hkcss.exlb.net:6655 | LTS           |
 
