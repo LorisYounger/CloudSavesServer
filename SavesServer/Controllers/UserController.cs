@@ -28,7 +28,7 @@ namespace SavesServer.Controllers
                     SteamID = data.SteamID,
                     PassKey = data.PassKey
                 };
-                FSQL.Insert(user).ExecuteAffrows();
+                user.Uid = (int)FSQL.Insert(user).ExecuteIdentity();
             }
             return user;
         }
