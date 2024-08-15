@@ -19,7 +19,7 @@ namespace SavesServer.Controllers
         /// <returns></returns>
         public static db_User Login(DataStructure.LoginData data)
         {
-            db_User user = Program.FSQL.Select<db_User>().Where(a => a.SteamID == data.SteamID && a.PassKey == a.PassKey).ToOne();
+            db_User user = Program.FSQL.Select<db_User>().Where(a => a.SteamID == data.SteamID && a.PassKey == data.PassKey).ToOne();
             //如果用户不存在则创建
             if (user == null)
             {//创建用户

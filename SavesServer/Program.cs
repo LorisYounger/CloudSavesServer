@@ -14,7 +14,7 @@ namespace SavesServer
         /// <summary>
         /// °æ±¾ºÅ
         /// </summary>
-        public static string Version => "1.0";
+        public static string Version => "1.1";
 
         public static void Main(string[] args)
         {
