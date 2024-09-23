@@ -170,25 +170,28 @@ namespace SavesServer
                 string? result = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(result))
                 {
-                    result = null;
-                }
-                if (File.Exists(result))
-                {
-                    Set.CertificatePath = result;
-                }
-                else if (File.Exists(Path.Combine(Environment.CurrentDirectory, result ?? "")))
-                {
-                    Set.CertificatePath = Path.Combine(Environment.CurrentDirectory, result ?? "");
+                    Set.CertificatePath = "no ssl";
                 }
                 else
                 {
-                    Set.CertificatePath = "";
-                }
-                if (!string.IsNullOrWhiteSpace(Set.CertificatePath))
-                {
-                    Console.WriteLine("Please Enter Certificate Password:".Translate());
-                    Set.CertificatePassword = Console.ReadLine() ?? "";
-                }
+                    if (File.Exists(result))
+                    {
+                        Set.CertificatePath = result;
+                    }
+                    else if (File.Exists(Path.Combine(Environment.CurrentDirectory, result ?? "no ssl")))
+                    {
+                        Set.CertificatePath = Path.Combine(Environment.CurrentDirectory, result ?? "no ssl");
+                    }
+                    else
+                    {
+                        Set.CertificatePath = "no ssl";
+                    }
+                    if (!string.IsNullOrWhiteSpace(Set.CertificatePath) && Set.CertificatePath != "no ssl")
+                    {
+                        Console.WriteLine("Please Enter Certificate Password:".Translate());
+                        Set.CertificatePassword = Console.ReadLine() ?? "";
+                    }
+                }              
             }
             File.WriteAllText(setpath, LPSConvert.SerializeObject(Set).ToString());
         }
