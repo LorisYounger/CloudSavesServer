@@ -46,5 +46,10 @@ namespace SavesServer.DataBase
         /// </summary>
         [Column(StringLength = 10000)]
         public override string Introduce { get; set; } = "";
+        /// <summary>
+        /// 是否是自动存档
+        /// </summary>
+        [Column]
+        public override bool IsAutoSave { get; set; } = true;
     }
 }

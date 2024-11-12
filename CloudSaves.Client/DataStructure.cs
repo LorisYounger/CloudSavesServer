@@ -49,6 +49,10 @@ namespace CloudSaves.Client
             /// 存档名称
             /// </summary>
             public virtual string SaveName { get; set; } = "";
+            /// <summary>
+            /// 是否是自动保存
+            /// </summary>
+            public virtual bool? IsAutoSave { get; set; }
         }
     }
 }

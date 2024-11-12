@@ -66,6 +66,10 @@ namespace CloudSaves.Client
             /// 存档介绍 (eg: 存档版本,存档内容)
             /// </summary>
             [Line] public virtual string Introduce { get; set; } = "";
+            /// <summary>
+            /// 是否是自动存档
+            /// </summary>
+            [Line] public virtual bool IsAutoSave { get; set; } = false;
         }
     }
 }
