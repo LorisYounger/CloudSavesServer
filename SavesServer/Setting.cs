@@ -30,5 +30,14 @@ namespace SavesServer
         /// 证书密码(若有)
         /// </summary>
         [Line] public string CertificatePassword { get; set; } = "";
+
+        /// <summary>
+        /// 每个用户最大自动存档数量/游戏 (不一定能达到这个数量)
+        /// </summary>
+        [Line] public int BackupMaxAutoperUser { get; set; } = 1000;
+        /// <summary>
+        /// 每个用户最大自动存档数量/游戏 (不一定能达到这个数量)
+        /// </summary>
+        [Line] public int BackupMaxManualperUser { get; set; } = 1000;
     }
 }

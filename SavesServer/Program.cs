@@ -1,6 +1,8 @@
 using LinePutScript;
 using LinePutScript.Converter;
 using LinePutScript.Dictionary;
+using Newtonsoft.Json;
+using SavesServer.Controllers;
 using SavesServer.DataBase;
 using System.Security.Cryptography.X509Certificates;
 
@@ -14,7 +16,7 @@ namespace SavesServer
         /// <summary>
         /// °æ±¾ºÅ
         /// </summary>
-        public static string Version => "1.1";
+        public static string Version => "1.2";
 
         public static void Main(string[] args)
         {
@@ -83,9 +85,49 @@ namespace SavesServer
             Console.WriteLine("Server Start at Port:".Translate() + Set.Port);
             Console.WriteLine("Press Ctrl+C to exit.".Translate());
 
+            Task.Run(LoadOrder);
             app.Run();
         }
-
+        public static void LoadOrder()
+        {
+            while (true)
+            {
+                var input = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(input))
+                    continue;
+                var inputs = input.Split(' ');
+                switch (inputs[0].ToLower())
+                {
+                    case "smartremove":
+                        if (inputs.Length != 3 || !int.TryParse(inputs[1], out int uid))
+                        {
+                            Console.WriteLine("Usage: smartremove <userid> <gamename>");
+                            break;
+                        }
+                        SavesController.ManageGameSaves(uid, inputs[2]);
+                        break;
+                    case "smartremoveall":
+                        if (inputs.Length != 2)
+                        {
+                            Console.WriteLine("Usage: smartremoveall <userid>");
+                            break;
+                        }
+                        foreach (var item in FSQL.Select<db_User>().ToList(x => x.Uid))
+                        {
+                            SavesController.ManageGameSaves(item, inputs[1]);
+                        }
+                        break;
+                    case "viewusersaves":
+                        if (inputs.Length != 3 || !int.TryParse(inputs[1], out uid))
+                        {
+                            Console.WriteLine("Usage: viewusersaves <userid> <gamename>");
+                            break;
+                        }
+                        SavesController.DisplayUserSaveDistribution(uid, inputs[2]);
+                        break;
+                }
+            }
+        }
         public static void LoadSetting()
         {
             var setpath = Path.Combine(Environment.CurrentDirectory, "setting.lps");
@@ -191,7 +233,7 @@ namespace SavesServer
                         Console.WriteLine("Please Enter Certificate Password:".Translate());
                         Set.CertificatePassword = Console.ReadLine() ?? "";
                     }
-                }              
+                }
             }
             File.WriteAllText(setpath, LPSConvert.SerializeObject(Set).ToString());
         }
