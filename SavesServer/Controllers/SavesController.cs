@@ -277,7 +277,7 @@ namespace SavesServer.Controllers
             var saves = FSQL.Select<db_Save>()
                             .Where(s => s.Uid == userId && s.GameName == gameName)
                             .OrderByDescending(s => s.SaveTime)
-                            .ToList();
+                            .ToList(x => new { x.SaveID, x.SaveTime, x.IsAutoSave });
 
             // 分类存档
             var recent24Hours = saves.Where(s => s.SaveTime >= DateTime.Now.AddHours(-24)).ToList();
@@ -322,9 +322,10 @@ namespace SavesServer.Controllers
             int b = 2;
             while (true)
             {
-                int count = olderSaves.Count(s => s.SaveTime >= DateTime.Now.AddDays(-15 * (++b)));
-                if (count == 0) break; // 如果没有存档，停止循环
+                int count = olderSaves.Count(s => s.SaveTime > DateTime.Now.AddDays(-15 * (++b)));
                 Console.Write(GetCharacterForCount(count));
+                olderSaves.RemoveAll(s => s.SaveTime >= DateTime.Now.AddDays(-15 * b));
+                if (olderSaves.Count == 0) break; // 如果没有存档，停止循环
                 halfMonthCount++;
             }
             if (halfMonthCount == 0) Console.Write("_"); // 如果没有存档，显示'_'
@@ -334,16 +335,23 @@ namespace SavesServer.Controllers
         // 辅助方法，根据数量返回字符
         private static char GetCharacterForCount(int count)
         {
-            if (count == 0)
-                return '_';
-            else if (count < 3)
-                return '-';
-            else if (count < 6)
-                return '=';
-            else if (count < 10)
-                return '^';
-            else
-                return '|';
+            int rv = (int)Math.Sqrt(count);
+            if (rv > 9) rv = 9;
+            return rv.ToString().First();
+        }
+
+        public static void ConvertAutoSave()
+        {
+            var saves = FSQL.Select<db_Save>().ToList(x => new { x.SaveID, x.SaveName });
+            int count = 0;
+            foreach (var data in saves)
+            {
+                FSQL.Update<db_Save>().Set(x => x.IsAutoSave, data.SaveName.Contains("Automatic archiving") || data.SaveName.Contains("自动存档")
+                      || data.SaveName.Contains("自動存檔")).Where(a => a.SaveID == data.SaveID).ExecuteAffrows();
+                if (count++ % 100 == 0)
+                    Console.WriteLine("ConvertAutoSave".Translate() + ' ' + count);
+            }
+            Console.WriteLine("ConvertAutoSave {0} Done".Translate(count));
         }
 
     }

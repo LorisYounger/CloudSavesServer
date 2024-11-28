@@ -116,6 +116,7 @@ namespace SavesServer
                         {
                             SavesController.ManageGameSaves(item, inputs[1]);
                         }
+                        Console.WriteLine("All User Done".Translate());
                         break;
                     case "viewusersaves":
                         if (inputs.Length != 3 || !int.TryParse(inputs[1], out uid))
@@ -124,6 +125,9 @@ namespace SavesServer
                             break;
                         }
                         SavesController.DisplayUserSaveDistribution(uid, inputs[2]);
+                        break;
+                    case "convertautosave":
+                        SavesController.ConvertAutoSave();
                         break;
                 }
             }
@@ -145,6 +149,38 @@ namespace SavesServer
                 else
                 {
                     Set.Port = 6655;
+                }
+            }
+            if (Set.BackupMaxAutoperUser <= 0)
+            {
+                Console.WriteLine("Please Enter BackupMaxAutoperUser: (default:1000)".Translate());
+                if (int.TryParse(Console.ReadLine(), out var result))
+                {
+                    Set.BackupMaxAutoperUser = result;
+                    if (Set.BackupMaxAutoperUser <= 0)
+                    {
+                        Set.BackupMaxAutoperUser = 1000;
+                    }
+                }
+                else
+                {
+                    Set.BackupMaxAutoperUser = 1000;
+                }
+            }
+            if (Set.BackupMaxManualperUser <= 0)
+            {
+                Console.WriteLine("Please Enter BackupMaxManualperUser: (default:1000)".Translate());
+                if (int.TryParse(Console.ReadLine(), out var result))
+                {
+                    Set.BackupMaxManualperUser = result;
+                    if (Set.BackupMaxManualperUser <= 0)
+                    {
+                        Set.BackupMaxManualperUser = 1000;
+                    }
+                }
+                else
+                {
+                    Set.BackupMaxManualperUser = 1000;
                 }
             }
             if (Set.ConnectionString == "")
