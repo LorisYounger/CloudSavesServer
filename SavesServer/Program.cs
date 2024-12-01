@@ -109,7 +109,7 @@ namespace SavesServer
                     case "smartremoveall":
                         if (inputs.Length != 2)
                         {
-                            Console.WriteLine("Usage: smartremoveall <userid>");
+                            Console.WriteLine("Usage: smartremoveall <gamename>");
                             break;
                         }
                         foreach (var item in FSQL.Select<db_User>().ToList(x => x.Uid))

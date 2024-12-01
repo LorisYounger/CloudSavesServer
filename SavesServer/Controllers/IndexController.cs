@@ -23,19 +23,23 @@ namespace SavesServer.Controllers
 
         private string? serverInfo;
         private DateTime serverInfoTime = DateTime.MinValue;
+        private object serverInfoLock = new object();
         public string ServerInfo
         {
             get
             {
-                if (serverInfo == null || DateTime.Now > serverInfoTime)
+                lock (serverInfoLock)
                 {
-                    serverInfoTime = DateTime.Now.AddHours(1);
-                    serverInfo = "ServerInfo:|" +
-                        "TotalUser#" + Program.FSQL.Select<db_User>().Count() +
-                        ":|TotalSaves#" + Program.FSQL.Select<db_Save>().Count() +
-                        ":|";
+                    if (serverInfo == null || DateTime.Now > serverInfoTime)
+                    {
+                        serverInfoTime = DateTime.Now.AddHours(1);
+                        serverInfo = "ServerInfo:|" +
+                            "TotalUser#" + Program.FSQL.Select<db_User>().Count() +
+                            ":|TotalSaves#" + Program.FSQL.Select<db_Save>().Count() +
+                            ":|NextUpdate#" + serverInfoTime.ToString("yy/MM/dd HH:mm") + ":|";
+                    }
+                    return serverInfo;
                 }
-                return serverInfo;
             }
         }
     }

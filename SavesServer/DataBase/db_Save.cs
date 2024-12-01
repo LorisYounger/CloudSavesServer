@@ -7,6 +7,7 @@ namespace SavesServer.DataBase
     /// 游戏存档
     /// </summary>
     [Table]
+    [Index("idx_game_uid", "GameName,Uid")]
     public class db_Save : GameSaveData
     {
         /// <summary>

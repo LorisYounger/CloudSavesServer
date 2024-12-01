@@ -137,17 +137,35 @@ namespace SavesServer.Controllers
         {
             int deleteMCount = 0;
             int deleteACount = 0;
-            // 获取该用户的所有存档
-            var totalsaves = FSQL.Select<db_Save>()
-                            .Where(s => s.Uid == userId && s.GameName == gamename)
-                            .OrderByDescending(s => s.SaveTime)
-                            .ToList(x => new { x.SaveID, x.SaveTime, x.IsAutoSave });
+            const int pageSize = 100; // 每页处理的存档数量
+            int pageIndex = 0;
+            List<db_Save> totalsaves = new List<db_Save>();
+
+            while (true)
+            {
+                // 分页查询
+                List<db_Save> saves = FSQL.Select<db_Save>()
+                                .Where(s => s.Uid == userId && s.GameName == gamename)
+                                .Page(pageIndex, pageSize)
+                                .ToList(x => new db_Save() { SaveID = x.SaveID, SaveTime = x.SaveTime, IsAutoSave = x.IsAutoSave });
+
+                // 如果没有更多的存档，退出循环
+                if (!saves.Any())
+                {
+                    break;
+                }
+
+                // 将当前页的存档添加到总列表中
+                totalsaves.AddRange(saves);
+                // 增加页码
+                pageIndex++;
+            }
+
+
             var savesauto = totalsaves.FindAll(x => x.IsAutoSave);
             var savesmanual = totalsaves.FindAll(x => !x.IsAutoSave);
             if (savesauto.Count > Set.BackupMaxAutoperUser)
             {
-                if (savesauto.Count <= Set.BackupMaxAutoperUser) return;
-
                 // 计算各个时间段需要保留的存档数量
                 int recentCount = (int)(Set.BackupMaxAutoperUser * 0.1);
                 int hourlyCount = (int)(Set.BackupMaxAutoperUser * 0.3);
@@ -205,8 +223,6 @@ namespace SavesServer.Controllers
             }
             if (savesmanual.Count > Set.BackupMaxManualperUser)
             {
-                if (savesmanual.Count <= Set.BackupMaxManualperUser) return;
-
                 // 计算各个时间段需要保留的存档数量
                 int recentCount = (int)(Set.BackupMaxManualperUser * 0.1);
                 int hourlyCount = (int)(Set.BackupMaxManualperUser * 0.3);
@@ -263,7 +279,7 @@ namespace SavesServer.Controllers
                 }
             }
 
-            Console.WriteLine("DEBUG: SaveAuto" + savesauto.Count + " SaveManual" + savesmanual.Count + " DeleteAuto" + deleteACount + " DeleteManual" + deleteMCount);
+            Console.WriteLine("DEBUG: Auto_" + savesauto.Count + " Manual_" + savesmanual.Count + " DeleteAuto_" + deleteACount + " DeleteManual_" + deleteMCount);
         }
 
         /// <summary>
