@@ -12,7 +12,7 @@ namespace SavesServer.Controllers
         [HttpPost("")]
         public string Post(string? lang) => $"Saves Server:|v#{Program.Version}:|ContactInformation#{ContactInformation(lang)}:|\n" + ServerInfo;
 
-        public string ContactInformation(string? lang)
+        public static string ContactInformation(string? lang)
         {
             if (lang == null || Program.Set.ContactInformationTrans.Count == 0)
                 return Program.Set.ContactInformation;
@@ -21,16 +21,16 @@ namespace SavesServer.Controllers
             return Program.Set.ContactInformation;
         }
 
-        private string? serverInfo;
-        private DateTime serverInfoTime = DateTime.MinValue;
-        private object serverInfoLock = new object();
+        private static string? serverInfo;
+        private static DateTime serverInfoTime = DateTime.MinValue;
+        private static object serverInfoLock = new object();
         public string ServerInfo
         {
             get
             {
-                lock (serverInfoLock)
+                if (serverInfo == null || DateTime.Now > serverInfoTime)
                 {
-                    if (serverInfo == null || DateTime.Now > serverInfoTime)
+                    lock (serverInfoLock)
                     {
                         serverInfoTime = DateTime.Now.AddHours(1);
                         serverInfo = "ServerInfo:|" +
@@ -38,8 +38,8 @@ namespace SavesServer.Controllers
                             ":|TotalSaves#" + Program.FSQL.Select<db_Save>().Count() +
                             ":|NextUpdate#" + serverInfoTime.ToString("yy/MM/dd HH:mm") + ":|";
                     }
-                    return serverInfo;
                 }
+                return serverInfo;
             }
         }
     }
