@@ -67,7 +67,7 @@ namespace CloudSaves.Client
             {
                 Version = lps.FirstOrDefault()?[(gstr)"v"],
                 TotalUser = lps[1][(gint)"TotalUser"],
-                TotalSave = lps[1][(gint)"TotalSave"],
+                TotalSave = lps[1][(gint)"TotalSaves"],
                 ContactInformation = lps.FirstOrDefault()?[(gstr)"ContactInformation"]
             };
         }
@@ -117,7 +117,7 @@ namespace CloudSaves.Client
             return lps.FirstOrDefault()?.Name == "Success";
         }
         /// <summary>
-        /// 添加游戏存档
+        /// 添加游戏存档 (智能判断是否是自动保存)
         /// </summary>
         /// <param name="gamename">游戏名称</param>
         /// <param name="introduce">存档介绍/信息</param>
@@ -127,6 +127,36 @@ namespace CloudSaves.Client
         public async Task<bool> AddGameSave(string gamename, string introduce, string saveName, string data)
         {
             SaveData saveData = new SaveData() { GameName = gamename, GameSaveData = data, SaveName = saveName, Introduce = introduce };
+            SetLoginData(saveData);
+            var lps = await ConnectServer("Saves/AddGameSave", saveData);
+            return lps.FirstOrDefault()?.Name == "Success";
+        }
+        /// <summary>
+        /// 添加游戏存档 (自动保存)
+        /// </summary>
+        /// <param name="gamename">游戏名称</param>
+        /// <param name="introduce">存档介绍/信息</param>
+        /// <param name="saveName">存档名字</param>
+        /// <param name="data">存档数据</param>
+        /// <returns></returns>
+        public async Task<bool> AddAutoSave(string gamename, string introduce, string saveName, string data)
+        {
+            SaveData saveData = new SaveData() { GameName = gamename, GameSaveData = data, SaveName = saveName, Introduce = introduce, IsAutoSave = true };
+            SetLoginData(saveData);
+            var lps = await ConnectServer("Saves/AddGameSave", saveData);
+            return lps.FirstOrDefault()?.Name == "Success";
+        }
+        /// <summary>
+        /// 添加游戏存档 (手动保存)
+        /// </summary>
+        /// <param name="gamename">游戏名称</param>
+        /// <param name="introduce">存档介绍/信息</param>
+        /// <param name="saveName">存档名字</param>
+        /// <param name="data">存档数据</param>
+        /// <returns></returns>
+        public async Task<bool> AddManualSave(string gamename, string introduce, string saveName, string data)
+        {
+            SaveData saveData = new SaveData() { GameName = gamename, GameSaveData = data, SaveName = saveName, Introduce = introduce, IsAutoSave = false };
             SetLoginData(saveData);
             var lps = await ConnectServer("Saves/AddGameSave", saveData);
             return lps.FirstOrDefault()?.Name == "Success";

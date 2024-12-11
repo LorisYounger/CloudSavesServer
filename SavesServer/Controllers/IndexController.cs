@@ -21,24 +21,25 @@ namespace SavesServer.Controllers
             return Program.Set.ContactInformation;
         }
 
-        private static string? serverInfo;
+        private static string serverInfo = "ServerInfo:|TotalUser#-1:|TotalSaves#-1:|NextUpdate#" + serverInfoTime.ToString("yy/MM/dd HH:mm") + ":|";
         private static DateTime serverInfoTime = DateTime.MinValue;
-        private static object serverInfoLock = new object();
+        private static bool serverInfoLock = true;
         public string ServerInfo
         {
             get
             {
-                if (serverInfo == null || DateTime.Now > serverInfoTime)
-                {
-                    lock (serverInfoLock)
+                if (DateTime.Now > serverInfoTime && serverInfoLock)
+                    Task.Run(() =>
                     {
+                        serverInfoLock = false;
                         serverInfoTime = DateTime.Now.AddHours(1);
                         serverInfo = "ServerInfo:|" +
                             "TotalUser#" + Program.FSQL.Select<db_User>().Count() +
                             ":|TotalSaves#" + Program.FSQL.Select<db_Save>().Count() +
                             ":|NextUpdate#" + serverInfoTime.ToString("yy/MM/dd HH:mm") + ":|";
-                    }
-                }
+                        serverInfoLock = true;
+                    });
+
                 return serverInfo;
             }
         }

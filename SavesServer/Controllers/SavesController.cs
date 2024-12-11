@@ -61,16 +61,7 @@ namespace SavesServer.Controllers
             if (Checking.IDsCheck(HttpContext, data.SteamID, data.PassKey).Check(out error))
                 return error;
             db_User user = Login(data);
-            var saves = FSQL.Select<db_Save>().Where(a => a.Uid == user.Uid).Where(a => data.SaveIDs.Contains(a.SaveID)).ToList(
-                x => new db_Save()
-                {
-                    GameName = x.GameName,
-                    Introduce = x.Introduce,
-                    SaveID = x.SaveID,
-                    SaveName = x.SaveName,
-                    SaveTime = x.SaveTime,
-                    Uid = x.Uid
-                });
+            var saves = FSQL.Select<db_Save>().Where(a => a.Uid == user.Uid).Where(a => data.SaveIDs.Contains(a.SaveID)).ToList();
             LPS lps = new LPS();
             foreach (var save in saves)
             {
